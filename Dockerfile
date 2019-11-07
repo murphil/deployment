@@ -17,6 +17,7 @@ RUN set -eux \
   ; apt-get install -y --no-install-recommends \
  		apt-transport-https \
 		ca-certificates \
+    tzdata \
 		xz-utils \
 		$DEV_DEPS \
   ; apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
@@ -26,8 +27,9 @@ RUN set -eux \
   \
   ; ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
   ; echo "$TIMEZONE" > /etc/timezone \
-  \ curl ${wstunnel_url} > /usr/local/bin/wstunnel \
-    ; chmod a+x /usr/local/bin/wstunnel
+  \
+  ; curl ${wstunnel_url} > /usr/local/bin/wstunnel \
+  ; chmod a+x /usr/local/bin/wstunnel
 
 COPY services.d /etc/services.d
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
