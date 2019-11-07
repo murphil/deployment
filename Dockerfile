@@ -23,10 +23,13 @@ RUN set -eux \
   ; apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
   ; curl --fail --silent -L ${s6url} | \
     tar xzvf - -C / \
-  ; mkdir -p /var/run/sshd \
   \
   ; ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
   ; echo "$TIMEZONE" > /etc/timezone \
+  \
+  ; mkdir -p /var/run/sshd \
+  \
+  ; sed -i '1i\daemon off;' /etc/nginx/nginx.conf \
   \
   ; curl ${wstunnel_url} > /usr/local/bin/wstunnel \
   ; chmod a+x /usr/local/bin/wstunnel
