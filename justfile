@@ -7,7 +7,24 @@ test:
     docker run --rm \
         --name=test \
         -p 8090:80 \
-        -v $(pwd):/srv \
+        -v $(pwd):/app \
         -v vscode-server:/root/.vscode-server \
-        -v $(pwd)/id_ecdsa.php.pub:/root/.ssh/authorized_keys \
+        -e WEB_ROOT=/app \
+        -e WEB_SERVERNAME=srv.1 \
+        -v $(pwd)/id_ecdsa.pub:/root/.ssh/authorized_keys \
         nnurphy/deployment
+
+tunnel token:
+    docker run --rm \
+        --name=wsc \
+        -p 2233:8080 \
+        wstunnel -L 0.0.0.0:8080:127.0.0.1:22 \
+        ws://172.178.5.21:8090 \
+        --upgradePathPrefix=wstunnel-{{token}}
+
+# Host wstunnel
+#     HostName localhost
+#     User root
+#     IdentitiesOnly yes
+#     IdentityFile ~/.ssh/id_ecdsa
+#     Port 2233

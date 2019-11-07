@@ -30,6 +30,8 @@ RUN set -eux \
   ; mkdir -p /var/run/sshd \
   \
   ; sed -i '1i\daemon off;' /etc/nginx/nginx.conf \
+  ; rm -rf /etc/nginx/sites-available/* \
+  ; rm -rf /etc/nginx/sites-enabled/* \
   \
   ; curl ${wstunnel_url} > /usr/local/bin/wstunnel \
   ; chmod a+x /usr/local/bin/wstunnel
